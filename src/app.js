@@ -1,8 +1,6 @@
 import express from "express";
 //importando express
-
-import livro from "./models/Livro.js";
-
+import routes from "./routes/index.js";
 import conectaNaDatabase from "./config/dbConnect.js";
 
 const conexao = await conectaNaDatabase();
@@ -17,20 +15,7 @@ conexao.once("open", () => {
 
 const app = express();
 //express dentrom da variavel app
-
-app.use(express.json());
-//MIDDLEWARE -> Converter os dados que vao chegar para json
-
-//ROTA GET
-app.get("/", (req, res) => {
-    res.status(200).send("Curso de Node.js");
-});
-
-//ROTA GET LIVROS
-app.get("/livros", async (req, res) => {
-    const listaLivros = await livro.find({}); // find e metodo do mongoose que vai se conectar com banco e encontrar
-    res.status(200).json(listaLivros); // json e notacao de objetos que tem como ref obj JAVASCRIPT
-});
+routes(app);
 
 app.get("/livros/:id", (req, res) => {
     const index = buscaLivros(req.params.id);
